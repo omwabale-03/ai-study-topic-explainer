@@ -14,3 +14,17 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * Generates a simple AI explanation of a study topic for students
+ * @summary Explain a study topic
+ */
+export const ExplainTopicBody = zod.object({
+  topic: zod.string().describe("The study topic to explain"),
+});
+
+export const ExplainTopicResponse = zod.object({
+  explanation: zod
+    .string()
+    .describe("The AI-generated explanation of the topic"),
+});

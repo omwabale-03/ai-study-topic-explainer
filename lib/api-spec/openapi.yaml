@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: explain
+    description: AI topic explanation
 paths:
   /healthz:
     get:
@@ -24,6 +26,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /explain:
+    post:
+      operationId: explainTopic
+      tags: [explain]
+      summary: Explain a study topic
+      description: Generates a simple AI explanation of a study topic for students
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExplainTopicBody"
+      responses:
+        "200":
+          description: Explanation generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExplainTopicResponse"
+        "400":
+          description: Bad request - missing or empty topic
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +66,26 @@ components:
           type: string
       required:
         - status
-
+    ExplainTopicBody:
+      type: object
+      properties:
+        topic:
+          type: string
+          description: The study topic to explain
+      required:
+        - topic
+    ExplainTopicResponse:
+      type: object
+      properties:
+        explanation:
+          type: string
+          description: The AI-generated explanation of the topic
+      required:
+        - explanation
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error

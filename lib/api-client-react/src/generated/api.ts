@@ -5,18 +5,26 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 
-import type { HealthStatus } from "./api.schemas";
+import type {
+  ErrorResponse,
+  ExplainTopicBody,
+  ExplainTopicResponse,
+  HealthStatus,
+} from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
-import type { ErrorType } from "../custom-fetch";
+import type { ErrorType, BodyType } from "../custom-fetch";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -99,3 +107,90 @@ export function useHealthCheck<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * Generates a simple AI explanation of a study topic for students
+ * @summary Explain a study topic
+ */
+export const getExplainTopicUrl = () => {
+  return `/api/explain`;
+};
+
+export const explainTopic = async (
+  explainTopicBody: ExplainTopicBody,
+  options?: RequestInit,
+): Promise<ExplainTopicResponse> => {
+  return customFetch<ExplainTopicResponse>(getExplainTopicUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(explainTopicBody),
+  });
+};
+
+export const getExplainTopicMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof explainTopic>>,
+    TError,
+    { data: BodyType<ExplainTopicBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof explainTopic>>,
+  TError,
+  { data: BodyType<ExplainTopicBody> },
+  TContext
+> => {
+  const mutationKey = ["explainTopic"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof explainTopic>>,
+    { data: BodyType<ExplainTopicBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return explainTopic(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ExplainTopicMutationResult = NonNullable<
+  Awaited<ReturnType<typeof explainTopic>>
+>;
+export type ExplainTopicMutationBody = BodyType<ExplainTopicBody>;
+export type ExplainTopicMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Explain a study topic
+ */
+export const useExplainTopic = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof explainTopic>>,
+    TError,
+    { data: BodyType<ExplainTopicBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof explainTopic>>,
+  TError,
+  { data: BodyType<ExplainTopicBody> },
+  TContext
+> => {
+  return useMutation(getExplainTopicMutationOptions(options));
+};

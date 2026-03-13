@@ -8,3 +8,17 @@
 export interface HealthStatus {
   status: string;
 }
+
+export interface ExplainTopicBody {
+  /** The study topic to explain */
+  topic: string;
+}
+
+export interface ExplainTopicResponse {
+  /** The AI-generated explanation of the topic */
+  explanation: string;
+}
+
+export interface ErrorResponse {
+  error: string;
+}
