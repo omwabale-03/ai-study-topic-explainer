@@ -30,13 +30,12 @@ args = "AI Study Topic Explainer (Next.js)"
 name = "AI Study Topic Explainer (Next.js)"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "console"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "pnpm --filter @workspace/nextjs-study-explainer run dev"
-waitForPort = 3000
-
-[workflows.workflow.metadata]
-outputType = "webview"
+args = "sleep 9999"
 
 [agent]
 stack = "PNPM_WORKSPACE"

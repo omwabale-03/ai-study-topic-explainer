@@ -42,7 +42,6 @@ export async function POST(req: NextRequest) {
     });
 
     const explanation = response.text ?? "";
-
     return NextResponse.json({ explanation });
   } catch (error) {
     console.error("Gemini API error:", error);

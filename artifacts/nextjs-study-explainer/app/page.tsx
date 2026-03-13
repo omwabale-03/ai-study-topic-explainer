@@ -44,7 +44,6 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-blue-50 flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-2xl">
-        {/* Header */}
         <div className="text-center mb-10">
           <span className="inline-block text-4xl mb-4">🎓</span>
           <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
@@ -56,10 +55,8 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Input */}
         <TopicInput onExplain={handleExplain} isLoading={isLoading} />
 
-        {/* Loading */}
         {isLoading && (
           <div className="mt-6 flex items-center justify-center gap-3 text-violet-600 font-medium">
             <svg
@@ -86,7 +83,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* API Error */}
         {apiError && !isLoading && (
           <div
             className="mt-6 bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-sm font-medium"
@@ -96,7 +92,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Result */}
         {result && !isLoading && (
           <ExplanationCard
             topic={result.topic}
@@ -104,11 +99,10 @@ export default function Home() {
           />
         )}
 
-        {/* Footer */}
         <p className="text-center text-xs text-gray-400 mt-10">
           Powered by{" "}
-          <span className="font-semibold text-violet-400">Gemini AI</span> ·
-          Built with Next.js &amp; Tailwind CSS
+          <span className="font-semibold text-violet-400">Gemini AI</span>{" "}
+          &middot; Built with Next.js &amp; Tailwind CSS
         </p>
       </div>
     </main>

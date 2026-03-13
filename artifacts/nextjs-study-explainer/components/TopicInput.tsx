@@ -65,7 +65,6 @@ export default function TopicInput({ onExplain, isLoading }: TopicInputProps) {
         )}
       </form>
 
-      {/* Example topic chips */}
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <span className="text-sm text-gray-500">Try:</span>
         {EXAMPLE_TOPICS.map((t) => (
