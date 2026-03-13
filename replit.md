@@ -16,6 +16,7 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
 - **AI**: Google Gemini AI via Replit AI Integrations (`@workspace/integrations-gemini-ai`)
+- **Next.js App**: `artifacts/nextjs-study-explainer` — standalone Next.js 15 App Router project with its own Gemini integration
 
 ## Structure
 
